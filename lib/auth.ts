@@ -1,23 +1,16 @@
 import { betterAuth } from "better-auth";
 import { genericOAuth, mcp } from "better-auth/plugins";
-import { createClient } from "@libsql/client";
-import { LibsqlDialect } from "@libsql/kysely-libsql";
-import { Kysely } from "kysely";
 import { GENERIC_OAUTH_PROVIDER } from "@/lib/auth-config";
-
-const db = new Kysely({
-  dialect: new LibsqlDialect(
-    createClient({ url: process.env.DATABASE_URL ?? "file:./auth.db" })
-  ),
-});
+import Database from "better-sqlite3";
 
 export const auth = betterAuth({
-  database: db,
+  database: new Database("./auth.db"),
   baseURL:
     process.env.BETTER_AUTH_URL ??
     process.env.NEXT_PUBLIC_BETTER_AUTH_URL ??
     "http://localhost:3000",
   basePath: "/api/auth",
+  trustedOrigins: ["http://localhost:3000", "https://oidc-client.manmeet.pro"], // this add the real frontend url in case of the error "Origin is not allowed by Access-Control-Allow-Origin"
   plugins: [
     mcp({
       loginPage: "/auth",
