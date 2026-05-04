@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/better-sqlite3": "^7.6.13",
+    "@libsql/client": "^0.17.3",
+    "@libsql/kysely-libsql": "^0.4.1",
     "@vercel/mcp-adapter": "^0.11.2",
     "better-auth": "latest",
-    "better-sqlite3": "^11.10.0",
+    "kysely": "^0.28.17",
     "next": "15.4.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

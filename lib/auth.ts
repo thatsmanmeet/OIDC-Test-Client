@@ -1,10 +1,18 @@
 import { betterAuth } from "better-auth";
 import { genericOAuth, mcp } from "better-auth/plugins";
-import Database from "better-sqlite3";
+import { createClient } from "@libsql/client";
+import { LibsqlDialect } from "@libsql/kysely-libsql";
+import { Kysely } from "kysely";
 import { GENERIC_OAUTH_PROVIDER } from "@/lib/auth-config";
 
+const db = new Kysely({
+  dialect: new LibsqlDialect(
+    createClient({ url: process.env.DATABASE_URL ?? "file:./auth.db" })
+  ),
+});
+
 export const auth = betterAuth({
-  database: new Database("./auth.db"),
+  database: db,
   baseURL:
     process.env.BETTER_AUTH_URL ??
     process.env.NEXT_PUBLIC_BETTER_AUTH_URL ??
